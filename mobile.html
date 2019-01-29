@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mobile</title>
+</head>
+<body>
+<div>
+    <h1 style="color: #5da2ff;">NOKIA</h1>
+    <input type="button" id="btnnokiaInbox" value="Inbox" onclick="showInbox(nokia, 'nokia');"/>
+    <input type="button" id="btnnokiaSent" value="Sent" onclick="showSent(nokia,'nokia');"/>
+    <input type="button" id="btnnokiaDraft" value="Draft" onclick="showDraft(nokia,'nokia');"/> <br>
+    <input type="button" id="btnnokiaMessage" value="Text A Message" onclick="textMessage(nokia);"/>
+    <input type="button" id="btnnokiaSending" value="Send" onclick="send(nokia, iphone);"/><br>
+    <input type="button" id="btnnokiaPower" value="Power" onclick="onOff(nokia);"/>
+    <input type="button" id="btnnokiaCharge" value="Charge Battery" onclick="nokia.chargeBattery();"/>
+    <input type="button" id="btnnokiaBattery" value="Show Battery" onclick="alert(nokia.getBattery());"/>
+
+    <p id="nokia"></p>
+</div>
+<div>
+    <h1 style="color: #ff9846;">iPHONE</h1>
+    <input type="button" id="btniPhoneInbox" value="Inbox" onclick="showInbox(iphone,'iphone');"/>
+    <input type="button" id="btniPhoneSent" value="Sent" onclick="showSent(iphone,'iphone');"/>
+    <input type="button" id="btniPhoneDraft" value="Draft" onclick="showDraft(iphone,'iphone');"/> <br>
+    <input type="button" id="btniPhoneMessage" value="Text A Message" onclick="textMessage(iphone);"/>
+    <input type="button" id="btniPhoneSending" value="Send" onclick="send(iphone, nokia);"/><br>
+    <input type="button" id="btniPhonePower" value="Power" onclick="onOff(iphone);"/>
+    <input type="button" id="btniPhoneCharge" value="Charge Battery" onclick="iphone.chargeBattery()";/>
+    <input type="button" id="btniPhoneBattery" value="Show Battery" onclick="alert(iphone.getBattery());"/>
+    <p id="iphone"></p>
+</div>
+<script>
+    var Mobile = function(battery) {
+        this.battery = battery;
+        this.draft = "";
+        this.inbox = "";
+        this.sent = [];
+        this.status = true;
+
+        this.checkStatus = function() {
+            if (this.status) {
+                alert("ON");
+            } else {
+                alert("OFF");
+            }
+        };
+        this.turnOn = function(){
+            this.status = true;
+            alert("PHONE IS ON");
+            this.battery -= 1;
+        };
+
+        this.turnOff = function() {
+            this.status = false;
+            alert("PHONE IS OFF");
+            this.battery -= 1;
+        };
+
+        this.getBattery = function() {
+            return this.battery;
+        };
+
+        this.chargeBattery = function(){
+            if (this.status && this.getBattery() > 0) {
+                this.battery = 99;
+            } else {
+                alert("Turn On the phone");
+            }
+        };
+
+
+        this.texting = function(message){
+            if (this.status && this.battery > 0) {
+                this.draft = message;
+                this.battery -= 1;
+            } else {
+                alert("Turn On the phone");
+            }
+        };
+
+        this.sending = function(obj) {
+            if (this.status && this.getBattery() > 0) {
+                this.sent += this.draft + "<br>";
+                obj.inbox += this.draft + "<br>";
+                this.draft = "";
+                this.battery -= 1;
+            } else {
+                alert("Turn On the phone");
+            }
+        };
+
+        this.receiving = function(obj) {
+            if (this.status && this.getBattery() > 0) {
+                this.inbox += obj.sent +"<br>";
+                this.battery -= 1;
+            } else {
+                alert("Turn On the phone");
+            }
+        };
+
+    };
+
+    var nokia = new Mobile(2);
+    var iphone = new Mobile(1);
+    var count = 0;
+
+    function textMessage(obj){
+        var message = prompt("Enter a message: ");
+        obj.texting(message);
+    }
+
+    function showDraft(obj,id) {
+        document.getElementById(id).innerHTML = obj.draft;
+    }
+
+    function showInbox(obj, id) {
+        document.getElementById(id).innerHTML = obj.inbox;
+    }
+
+    function send(obj1,obj2) {
+        obj1.sending(obj2);
+    }
+
+    function showSent(obj, id){
+        document.getElementById(id).innerHTML = obj.sent;
+    }
+
+    function onOff(obj) {
+        count += 1;
+        if (count%2 === 0) {
+            obj.turnOn();
+        } else {
+            obj.turnOff();
+        }
+
+    }
+
+    // function chargeBattery(obj) {
+    //     obj.
+    // }
+</script>
+</body>
+</html>
