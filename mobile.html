@@ -104,10 +104,13 @@
     var nokia = new Mobile(2);
     var iphone = new Mobile(1);
     var count = 0;
+    var power = false;
 
     function textMessage(obj){
-        var message = prompt("Enter a message: ");
-        obj.texting(message);
+        if (power) {
+            var message = prompt("Enter a message: ");
+            obj.texting(message);
+        }
     }
 
     function showDraft(obj,id) {
